@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-if [ -z $AMPLIFY_API_KEY ]; then
+env_dir=$3
+
+if [ ! -f $env_dir/AMPLIFY_API_KEY ]; then
   echo "No AMPLIFY_API_KEY found, skipping NGINX Amplify setup"
   exit 0
 fi
@@ -8,5 +10,5 @@ echo "Downloading NGINX Amplify"
 curl -L -O https://github.com/nginxinc/nginx-amplify-agent/raw/master/packages/install.sh
 
 echo "Running Amplify Install Script"
-API_KEY=$AMPLIFY_API_KEY sh ./install.sh
+API_KEY=$(cat $env_dir/AMPLIFY_API_KEY) sh ./install.sh
 
