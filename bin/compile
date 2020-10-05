@@ -6,9 +6,17 @@ if [ ! -f $env_dir/AMPLIFY_API_KEY ]; then
   exit 0
 fi
 
-echo "Downloading NGINX Amplify"
-curl -L -O https://github.com/nginxinc/nginx-amplify-agent/raw/master/packages/install.sh
+echo "Adding NGINX public key"
+curl -fs http://nginx.org/keys/nginx_signing.key | apt-key add -
 
-echo "Running Amplify Install Script"
-API_KEY=$(cat $env_dir/AMPLIFY_API_KEY) sh ./install.sh
+codename=`lsb_release -cs` && \
+os=`lsb_release -is | tr '[:upper:]' '[:lower:]'` && \
+echo "deb http://packages.amplify.nginx.com/${os}/ ${codename} amplify-agent" > \
+/etc/apt/sources.list.d/nginx-amplify.list
+
+echo "Updating sources"
+apt-get update
+
+echo "Installing NGINX Amplify"
+apt-get install nginx-amplify-agent
 
