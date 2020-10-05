@@ -1,9 +1,4 @@
 #!/usr/bin/env bash
 
-if [ $AMPLIFY_API_KEY ]; then
-  echo "Setting up NGINX Amplify"
-  exit 0
-else
-  exit 1
-fi
+exit 0
 
